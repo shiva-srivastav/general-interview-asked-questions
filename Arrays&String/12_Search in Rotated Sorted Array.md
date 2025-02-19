@@ -53,6 +53,84 @@ class Solution {
 
 ## Approach 2: Optimized Binary Search
 
+### Step-by-Step Solution Procedure
+
+1. **Initial Setup**
+   - Initialize two pointers: `left = 0` and `right = nums.length - 1`
+   - This represents our current search space
+
+2. **Binary Search Loop**
+   - While `left <= right`:
+     - Calculate middle point: `mid = left + (right - left) / 2`
+     - If `nums[mid] == target`, we found our answer, return `mid`
+
+3. **Identify Sorted Portion**
+   - At any given point, at least one half of the array must be sorted
+   - Check if left half is sorted by comparing `nums[left] <= nums[mid]`
+   
+4. **Search in Left Half (if sorted)**
+   - If `nums[left] <= nums[mid]`, left half is sorted
+   - Check if target lies in this sorted range:
+     - If `target >= nums[left] && target < nums[mid]`
+       - Search left half: `right = mid - 1`
+     - Else
+       - Search right half: `left = mid + 1`
+
+5. **Search in Right Half (if sorted)**
+   - If left half is not sorted, right half must be sorted
+   - Check if target lies in this sorted range:
+     - If `target > nums[mid] && target <= nums[right]`
+       - Search right half: `left = mid + 1`
+     - Else
+       - Search left half: `right = mid - 1`
+
+6. **Return Result**
+   - If we exit the while loop without finding target, return -1
+
+### Visual Example
+Consider array: [4, 5, 6, 7, 0, 1, 2], target = 0
+
+```
+Step 1: Initial array
+[4, 5, 6, 7, 0, 1, 2]
+ L     M        R     mid = 3, nums[mid] = 7
+
+Step 2: Left half is sorted (4 ≤ 7), but target = 0 is not in range [4,7]
+[4, 5, 6, 7, 0, 1, 2]
+         L  M  R      mid = 5, nums[mid] = 1
+
+Step 3: Right half is sorted (1 ≤ 2), but target = 0 is not in range [1,2]
+[4, 5, 6, 7, 0, 1, 2]
+         L     M  R   mid = 4, nums[mid] = 0
+
+Step 4: Found target at index 4
+Return 4
+```
+
+### Common Pitfalls to Avoid
+1. **Wrong Mid Calculation**
+   - Use `mid = left + (right - left) / 2`
+   - Not `(left + right) / 2` (can cause overflow)
+
+2. **Incorrect Comparisons**
+   - Always compare with `nums[mid]`, not just `mid`
+   - Use `<=` for sorted portion check
+
+3. **Wrong Range Checks**
+   - For left portion: `target >= nums[left] && target < nums[mid]`
+   - For right portion: `target > nums[mid] && target <= nums[right]`
+
+4. **Edge Cases**
+   - Single element array
+   - Two element array
+   - Target at rotation point
+
+### Debugging Tips
+1. Print the values of `left`, `mid`, `right` at each step
+2. Track which portion is identified as sorted
+3. Verify the range conditions
+4. Test with small arrays first
+
 ### Code
 ```java
 class Solution {
