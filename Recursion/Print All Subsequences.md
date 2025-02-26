@@ -27,7 +27,7 @@ For an array like [1, 2, 3], the recursive tree can be visualized as:
 
 ```mermaid
 graph TD
-    A[Start: []] --> B["Take 1: [1]"]
+    A[Start: Empty] --> B["Take 1: [1]"]
     A --> C["Not Take 1: []"]
     
     B --> D["Take 2: [1,2]"]
